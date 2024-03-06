@@ -134,7 +134,7 @@ public class Chessman : MonoBehaviour
                 break;
             case "black_king":
             case "white_king":
-                SurroundMovePlate();
+                SurroundMovePlate(1);
                 break;
             case "black_rook":
             case "white_rook":
@@ -168,7 +168,7 @@ public class Chessman : MonoBehaviour
 
         if (sc.PositionOnBoard(x, y) && sc.GetPosition(x, y).GetComponent<Chessman>().player != player)
         {
-            MovePlateAttackSpawn(x, y);
+            MovePlateSpawn(x, y, true);
         }
     }
 
@@ -184,16 +184,19 @@ public class Chessman : MonoBehaviour
         PointMovePlate(xBoard - 2, yBoard - 1);
     }
 
-    public void SurroundMovePlate()
+    public void SurroundMovePlate(int Num)
     {
-        PointMovePlate(xBoard, yBoard + 1);
-        PointMovePlate(xBoard, yBoard - 1);
-        PointMovePlate(xBoard - 1, yBoard + 0);
-        PointMovePlate(xBoard - 1, yBoard - 1);
-        PointMovePlate(xBoard - 1, yBoard + 1);
-        PointMovePlate(xBoard + 1, yBoard + 0);
-        PointMovePlate(xBoard + 1, yBoard - 1);
-        PointMovePlate(xBoard + 1, yBoard + 1);
+        int repeats = Num;
+        for (int i = repeats * -1; i <= repeats; i++)
+        {
+            for (int k = repeats * -1; k <= repeats; k++)
+            {
+                if (!(k = 0 && i = 0)
+                {
+                    PointMovePlate(xBoard + k, yBoard + i);
+                }
+            }
+        }
     }
 
     public void PointMovePlate(int x, int y)
@@ -205,11 +208,11 @@ public class Chessman : MonoBehaviour
 
             if (cp == null)
             {
-                MovePlateSpawn(x, y);
+                MovePlateSpawn(x, y, false);
             }
             else if (cp.GetComponent<Chessman>().player != player)
             {
-                MovePlateAttackSpawn(x, y);
+                MovePlateSpawn(x, y, true);
             }
         }
     }
@@ -221,22 +224,22 @@ public class Chessman : MonoBehaviour
         {
             if (sc.GetPosition(x, y) == null)
             {
-                MovePlateSpawn(x, y);
+                MovePlateSpawn(x, y, false);
             }
 
             if (sc.PositionOnBoard(x + 1, y) && sc.GetPosition(x + 1, y) != null && sc.GetPosition(x + 1, y).GetComponent<Chessman>().player != player)
             {
-                MovePlateAttackSpawn(x + 1, y);
+                MovePlateSpawn(x + 1, y, true);
             }
 
             if (sc.PositionOnBoard(x - 1, y) && sc.GetPosition(x - 1, y) != null && sc.GetPosition(x - 1, y).GetComponent<Chessman>().player != player)
             {
-                MovePlateAttackSpawn(x - 1, y);
+                MovePlateSpawn(x - 1, y, true);
             }
         }
     }
 
-    public void MovePlateSpawn(int matrixX, int matrixY)
+    public void MovePlateSpawn(int matrixX, int matrixY, boolean atk)
     {
         //Get the board value in order to convert to xy coords
         float x = matrixX;
@@ -254,29 +257,7 @@ public class Chessman : MonoBehaviour
         GameObject mp = Instantiate(movePlate, new Vector3(x, y, -3.0f), Quaternion.identity);
 
         MovePlate mpScript = mp.GetComponent<MovePlate>();
-        mpScript.SetReference(gameObject);
-        mpScript.SetCoords(matrixX, matrixY);
-    }
-
-    public void MovePlateAttackSpawn(int matrixX, int matrixY)
-    {
-        //Get the board value in order to convert to xy coords
-        float x = matrixX;
-        float y = matrixY;
-
-        //Adjust by variable offset
-        x *= 0.66f;
-        y *= 0.66f;
-
-        //Add constants (pos 0,0)
-        x += -2.3f;
-        y += -2.3f;
-
-        //Set actual unity values
-        GameObject mp = Instantiate(movePlate, new Vector3(x, y, -3.0f), Quaternion.identity);
-
-        MovePlate mpScript = mp.GetComponent<MovePlate>();
-        mpScript.attack = true;
+        mpScript.attack = atk;
         mpScript.SetReference(gameObject);
         mpScript.SetCoords(matrixX, matrixY);
     }
