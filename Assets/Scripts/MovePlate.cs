@@ -16,13 +16,16 @@ public class MovePlate : MonoBehaviour
 
     //false: movement, true: attacking
     public bool attack = false;
+    public String type = "move";
 
     public void Start()
     {
         if (attack)
         {
-            //Set to red
-            gameObject.GetComponent<SpriteRenderer>().color = new Color(1.0f, 0.0f, 0.0f, 1.0f);
+            if (type = "take") {
+                gameObject.GetComponent<SpriteRenderer>().color = new Color(1.0f, 0.0f, 0.0f, 1.0f); } //Set to red 
+            else if (type = "snipe") {
+                gameObject.GetComponent<SpriteRenderer>().color = new Color(1.0f, 0.0f, 1.0f, 1.0f); } //Set to (other color)
         }
     }
 
@@ -41,15 +44,15 @@ public class MovePlate : MonoBehaviour
             Destroy(cp);
         }
 
-        //Set the Chesspiece's original location to be empty
-        controller.GetComponent<Game>().SetPositionEmpty(reference.GetComponent<Chessman>().GetXBoard(), 
-            reference.GetComponent<Chessman>().GetYBoard());
-
-        //Move reference chess piece to this position
-        reference.GetComponent<Chessman>().SetXBoard(matrixX);
-        reference.GetComponent<Chessman>().SetYBoard(matrixY);
-        reference.GetComponent<Chessman>().SetCoords();
-
+        if (!(type = "snipe")
+        {
+            //Set the Chesspiece's original location to be empty
+            controller.GetComponent<Game>().SetPositionEmpty(reference.GetComponent<Chessman>().GetXBoard(), reference.GetComponent<Chessman>().GetYBoard());
+            //Move reference chess piece to this position
+            reference.GetComponent<Chessman>().SetXBoard(matrixX);
+            reference.GetComponent<Chessman>().SetYBoard(matrixY);
+            reference.GetComponent<Chessman>().SetCoords();
+        }
         //Update the matrix
         controller.GetComponent<Game>().SetPosition(reference);
 
