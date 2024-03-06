@@ -168,7 +168,7 @@ public class Chessman : MonoBehaviour
 
         if (sc.PositionOnBoard(x, y) && sc.GetPosition(x, y).GetComponent<Chessman>().player != player)
         {
-            MovePlateSpawn(x, y, true);
+            MovePlateSpawn(x, y, true, "take");
         }
     }
 
@@ -208,11 +208,11 @@ public class Chessman : MonoBehaviour
 
             if (cp == null)
             {
-                MovePlateSpawn(x, y, false);
+                MovePlateSpawn(x, y, false, "move");
             }
             else if (cp.GetComponent<Chessman>().player != player)
             {
-                MovePlateSpawn(x, y, true);
+                MovePlateSpawn(x, y, true, "take");
             }
         }
     }
@@ -224,22 +224,22 @@ public class Chessman : MonoBehaviour
         {
             if (sc.GetPosition(x, y) == null)
             {
-                MovePlateSpawn(x, y, false);
+                MovePlateSpawn(x, y, false, "move");
             }
 
             if (sc.PositionOnBoard(x + 1, y) && sc.GetPosition(x + 1, y) != null && sc.GetPosition(x + 1, y).GetComponent<Chessman>().player != player)
             {
-                MovePlateSpawn(x + 1, y, true);
+                MovePlateSpawn(x + 1, y, true, "take");
             }
 
             if (sc.PositionOnBoard(x - 1, y) && sc.GetPosition(x - 1, y) != null && sc.GetPosition(x - 1, y).GetComponent<Chessman>().player != player)
             {
-                MovePlateSpawn(x - 1, y, true);
+                MovePlateSpawn(x - 1, y, true, "take");
             }
         }
     }
 
-    public void MovePlateSpawn(int matrixX, int matrixY, boolean atk)
+    public void MovePlateSpawn(int matrixX, int matrixY, boolean atk, String type)
     {
         //Get the board value in order to convert to xy coords
         float x = matrixX;
