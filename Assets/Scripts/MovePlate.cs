@@ -1,4 +1,5 @@
-﻿using System.Collections;
+using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -16,16 +17,27 @@ public class MovePlate : MonoBehaviour
 
     //false: movement, true: attacking
     public bool attack = false;
-    public String type = "move";
+    public String type = null;
+
+    public Sprite move, take, snipe;
+
+    public void Activate()
+    {
+        switch (type)
+        {
+            case "move": this.GetComponent<SpriteRenderer>().sprite = move; break;
+            case "take": this.GetComponent<SpriteRenderer>().sprite = take; break;
+            case "snipe": this.GetComponent<SpriteRenderer>().sprite = snipe; break;
+        }
+    }
 
     public void Start()
     {
-        if (attack)
+        switch (type)
         {
-            if (type = "take") {
-                gameObject.GetComponent<SpriteRenderer>().color = new Color(1.0f, 0.0f, 0.0f, 1.0f); } //Set to red 
-            else if (type = "snipe") {
-                gameObject.GetComponent<SpriteRenderer>().color = new Color(1.0f, 0.0f, 1.0f, 1.0f); } //Set to (other color)
+            case "move": this.GetComponent<SpriteRenderer>().sprite = move; break;
+            case "take": this.GetComponent<SpriteRenderer>().sprite = take; break;
+            case "snipe": this.GetComponent<SpriteRenderer>().sprite = snipe; break;
         }
     }
 
@@ -44,7 +56,7 @@ public class MovePlate : MonoBehaviour
             Destroy(cp);
         }
 
-        if (!(type = "snipe")
+        if (!(type == "snipe"))
         {
             //Set the Chesspiece's original location to be empty
             controller.GetComponent<Game>().SetPositionEmpty(reference.GetComponent<Chessman>().GetXBoard(), reference.GetComponent<Chessman>().GetYBoard());
@@ -53,6 +65,8 @@ public class MovePlate : MonoBehaviour
             reference.GetComponent<Chessman>().SetYBoard(matrixY);
             reference.GetComponent<Chessman>().SetCoords();
         }
+
+
         //Update the matrix
         controller.GetComponent<Game>().SetPosition(reference);
 
