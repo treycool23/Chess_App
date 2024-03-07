@@ -1,4 +1,5 @@
-﻿using System.Collections;
+using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -17,8 +18,8 @@ public class Chessman : MonoBehaviour
     private string player;
 
     //References to all the possible Sprites that this Chesspiece could be
-    public Sprite black_queen, black_knight, black_bishop, black_king, black_rook, black_pawn;
-    public Sprite white_queen, white_knight, white_bishop, white_king, white_rook, white_pawn;
+    public Sprite black_queen, black_knight, black_bishop, black_king, black_rook, black_pawn, black_ranger;
+    public Sprite white_queen, white_knight, white_bishop, white_king, white_rook, white_pawn, white_ranger;
 
     public void Activate()
     {
@@ -43,15 +44,15 @@ public class Chessman : MonoBehaviour
             case "white_king": this.GetComponent<SpriteRenderer>().sprite = white_king; player = "white"; break;
             case "white_rook": this.GetComponent<SpriteRenderer>().sprite = white_rook; player = "white"; break;
             case "white_pawn": this.GetComponent<SpriteRenderer>().sprite = white_pawn; player = "white"; break;
+            case "white_ranger": this.GetComponent<SpriteRenderer>().sprite = white_ranger; player = "white"; break;
+            case "black_ranger": this.GetComponent<SpriteRenderer>().sprite = black_ranger; player = "black"; break;
         }
     }
-
     public void SetCoords()
     {
         //Get the board value in order to convert to xy coords
         float x = xBoard;
         float y = yBoard;
-
         //Adjust by variable offset
         x *= 1.25f;
         y *= 1.25f;
@@ -144,10 +145,16 @@ public class Chessman : MonoBehaviour
                 LineMovePlate(0, -1);
                 break;
             case "black_pawn":
-                PawnMovePlate(xBoard, yBoard - 1);
+                PawnMovePlate(xBoard, yBoard - 1, -1, 6);
                 break;
             case "white_pawn":
-                PawnMovePlate(xBoard, yBoard + 1);
+                PawnMovePlate(xBoard, yBoard + 1, 1, 1);
+                break;
+            case "black_ranger":
+                RangerMovePlate(xBoard, yBoard - 1, -1);
+                break;
+            case "white_ranger":
+                RangerMovePlate(xBoard, yBoard + 1, 1);
                 break;
         }
     }
@@ -161,7 +168,7 @@ public class Chessman : MonoBehaviour
 
         while (sc.PositionOnBoard(x, y) && sc.GetPosition(x, y) == null)
         {
-            MovePlateSpawn(x, y);
+            MovePlateSpawn(x, y, false, "move");
             x += xIncrement;
             y += yIncrement;
         }
@@ -191,7 +198,7 @@ public class Chessman : MonoBehaviour
         {
             for (int k = repeats * -1; k <= repeats; k++)
             {
-                if (!(k = 0 && i = 0)
+                if (!(k == 0 && i == 0))
                 {
                     PointMovePlate(xBoard + k, yBoard + i);
                 }
@@ -217,7 +224,7 @@ public class Chessman : MonoBehaviour
         }
     }
 
-    public void PawnMovePlate(int x, int y)
+    public void PawnMovePlate(int x, int y, int k, int startRank)
     {
         Game sc = controller.GetComponent<Game>();
         if (sc.PositionOnBoard(x, y))
@@ -225,6 +232,11 @@ public class Chessman : MonoBehaviour
             if (sc.GetPosition(x, y) == null)
             {
                 MovePlateSpawn(x, y, false, "move");
+            }
+
+            if ((yBoard == startRank) && sc.GetPosition(x, y + k) == null)
+            {
+                MovePlateSpawn(x, y + k, false, "move");
             }
 
             if (sc.PositionOnBoard(x + 1, y) && sc.GetPosition(x + 1, y) != null && sc.GetPosition(x + 1, y).GetComponent<Chessman>().player != player)
@@ -239,7 +251,29 @@ public class Chessman : MonoBehaviour
         }
     }
 
-    public void MovePlateSpawn(int matrixX, int matrixY, boolean atk, String type)
+    public void RangerMovePlate(int x, int y, int k)
+    {
+        Game sc = controller.GetComponent<Game>();
+        if (sc.PositionOnBoard(x, y))
+        {
+            if (sc.GetPosition(x - 1, y) == null)
+            {
+                MovePlateSpawn(x - 1, y, false, "move");
+            }
+
+            if (sc.GetPosition(x + 1, y) == null)
+            {
+                MovePlateSpawn(x + 1, y, false, "move");
+            }
+
+            if (sc.PositionOnBoard(x, y + k) && sc.GetPosition(x, y + k) != null && sc.GetPosition(x, y + k).GetComponent<Chessman>().player != player)
+            {
+               MovePlateSpawn(x, y + k, true, "snipe");
+            }
+        }
+    }
+
+    public void MovePlateSpawn(int matrixX, int matrixY, Boolean atk, String type)
     {
         //Get the board value in order to convert to xy coords
         float x = matrixX;
