@@ -1,8 +1,9 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using static System.Net.Mime.MediaTypeNames;
 
 public class Game : MonoBehaviour
 {
@@ -30,13 +31,13 @@ public class Game : MonoBehaviour
             Create("white_bishop", 2, 0), Create("white_queen", 3, 0), Create("white_king", 4, 0),
             Create("white_bishop", 5, 0), Create("white_knight", 6, 0), Create("white_rook", 7, 0),
             Create("white_pawn", 0, 1), Create("white_pawn", 1, 1), Create("white_pawn", 2, 1),
-            Create("white_pawn", 3, 1), Create("white_pawn", 4, 1), Create("white_pawn", 5, 1),
+            Create("white_ranger", 3, 1), Create("white_ranger", 4, 1), Create("white_pawn", 5, 1),
             Create("white_pawn", 6, 1), Create("white_pawn", 7, 1) };
         playerBlack = new GameObject[] { Create("black_rook", 0, 7), Create("black_knight",1,7),
             Create("black_bishop",2,7), Create("black_queen",3,7), Create("black_king",4,7),
             Create("black_bishop",5,7), Create("black_knight",6,7), Create("black_rook",7,7),
             Create("black_pawn", 0, 6), Create("black_pawn", 1, 6), Create("black_pawn", 2, 6),
-            Create("black_pawn", 3, 6), Create("black_pawn", 4, 6), Create("black_pawn", 5, 6),
+            Create("black_ranger", 3, 6), Create("black_ranger", 4, 6), Create("black_pawn", 5, 6),
             Create("black_pawn", 6, 6), Create("black_pawn", 7, 6) };
 
         //Set all piece positions on the positions board
@@ -114,15 +115,15 @@ public class Game : MonoBehaviour
             SceneManager.LoadScene("Game"); //Restarts the game by loading the scene over again
         }
     }
-    
+
     public void Winner(string playerWinner)
     {
         gameOver = true;
 
         //Using UnityEngine.UI is needed here
-        GameObject.FindGameObjectWithTag("WinnerText").GetComponent<Text>().enabled = true;
-        GameObject.FindGameObjectWithTag("WinnerText").GetComponent<Text>().text = playerWinner + " is the winner";
+        GameObject.FindGameObjectWithTag("WinnerText").GetComponent<UnityEngine.UI.Text>().enabled = true;
+        GameObject.FindGameObjectWithTag("WinnerText").GetComponent<UnityEngine.UI.Text>().text = playerWinner + " is the winner";
 
-        GameObject.FindGameObjectWithTag("RestartText").GetComponent<Text>().enabled = true;
+        GameObject.FindGameObjectWithTag("RestartText").GetComponent<UnityEngine.UI.Text>().enabled = true;
     }
 }
