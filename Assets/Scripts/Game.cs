@@ -23,6 +23,10 @@ public class Game : MonoBehaviour
     //Game Ending
     private bool gameOver = false;
 
+    //Morale aka Points
+    private int blackMorale = 30;
+    private int whiteMorale = 30;
+
     //Unity calls this right when the game starts, there are a few built in functions
     //that Unity can call for you
     public void Start()
@@ -83,6 +87,24 @@ public class Game : MonoBehaviour
         return true;
     }
 
+    //Morale functions
+    public void ChangeBlackMorale(int change)
+    {
+        blackMorale += change;
+    }
+    public void ChangeWhiteMorale(int change)
+    {
+        whiteMorale += change;
+    }
+    public int GetBlackMorale()
+    {
+        return blackMorale;
+    }
+    public int GetWhiteMorale()
+    {
+        return whiteMorale;
+    }
+    
     public string GetCurrentPlayer()
     {
         return currentPlayer;
@@ -98,6 +120,7 @@ public class Game : MonoBehaviour
         if (currentPlayer == "white")
         {
             currentPlayer = "black";
+            
         }
         else
         {
