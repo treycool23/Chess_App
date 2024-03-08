@@ -17,6 +17,9 @@ public class Chessman : MonoBehaviour
     //Variable for keeping track of the player it belongs to "black" or "white"
     private string player;
 
+    //reference id, for making sure I don't mess something up later
+    private int id = null;
+
     //References to all the possible Sprites that this Chesspiece could be
     public Sprite black_queen, black_knight, black_bishop, black_king, black_rook, black_pawn, black_ranger;
     public Sprite white_queen, white_knight, white_bishop, white_king, white_rook, white_pawn, white_ranger;
