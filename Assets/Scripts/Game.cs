@@ -17,6 +17,10 @@ public class Game : MonoBehaviour
     private GameObject[] playerBlack = new GameObject[16];
     private GameObject[] playerWhite = new GameObject[16];
 
+    //default start positions and pieces
+    private string[] startBlackBack = new string[] {"black_rook", "black_knight", "black_bishop", "black_queen", "black_king", "black_bishop", "black_knight", "black_rook"};
+    private string[] startBlackBack = new string[] {"white_rook", "white_knight", "white_bishop", "white_queen", "white_king", "white_bishop", "white_knight", "white_rook"};
+    
     //current turn
     private string currentPlayer = "white";
 
@@ -31,6 +35,8 @@ public class Game : MonoBehaviour
     //that Unity can call for you
     public void Start()
     {
+        int i = 0;
+        playerWhite = new GameObject[] {}
         playerWhite = new GameObject[] { Create("white_rook", 0, 0), Create("white_knight", 1, 0),
             Create("white_bishop", 2, 0), Create("white_queen", 3, 0), Create("white_king", 4, 0),
             Create("white_bishop", 5, 0), Create("white_knight", 6, 0), Create("white_rook", 7, 0),
@@ -52,11 +58,12 @@ public class Game : MonoBehaviour
         }
     }
 
-    public GameObject Create(string name, int x, int y)
+    public GameObject Create(string name, int x, int y, int pId)
     {
         GameObject obj = Instantiate(chesspiece, new Vector3(0, 0, -1), Quaternion.identity);
         Chessman cm = obj.GetComponent<Chessman>(); //We have access to the GameObject, we need the script
         cm.name = name; //This is a built in variable that Unity has, so we did not have to declare it before
+        cm.id = pId; //new id thing I'm adding so I don't cry later
         cm.SetXBoard(x);
         cm.SetYBoard(y);
         cm.Activate(); //It has everything set up so it can now Activate()
